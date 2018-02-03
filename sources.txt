@@ -1,0 +1,1 @@
+master "id Software Quake III Master" master3.idsoftware.com
