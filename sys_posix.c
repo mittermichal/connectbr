@@ -17,6 +17,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+#include "q_shared.h"
+#include "cvar.h"
+
 #include <unistd.h>
 #include <signal.h>
 #include <stdlib.h>
@@ -41,11 +44,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <errno.h>
 #include <dirent.h>
 
-#include <SDL.h>
+#include <SDL/SDL.h>
 #include <dlfcn.h>
 
 #include "quakedef.h"
-#include "server.h"
+//#include "server.h"
 #include "pcre.h"
 
 
@@ -113,10 +116,10 @@ void Sys_Error(char *error, ...)
 	vsnprintf (string, sizeof(string), error, argptr);
 	va_end (argptr);
 	fprintf(stderr, "Error: %s\n", string);
-	if (qconsole_log)
-		fprintf(qconsole_log, "Error: %s\n", string);
+    //if (qconsole_log)
+    //	fprintf(qconsole_log, "Error: %s\n", string);
 
-	Host_Shutdown ();
+    //Host_Shutdown ();
 	exit(1);
 }
 
@@ -160,7 +163,7 @@ int Sys_FileSizeTime(char *path, int *time1)
 Sys_listdir
 ================
 */
-
+/*
 dir_t Sys_listdir (const char *path, const char *ext, int sort_type)
 {
 	static file_t list[MAX_DIRFILES];
@@ -255,7 +258,7 @@ int Sys_chdir(const char *path)
 {
 	return (chdir(path) == 0);
 }
-
+*/
 char *Sys_getcwd(char *buf, int bufsize)
 {
 	return getcwd(buf, bufsize);
@@ -298,7 +301,7 @@ double Sys_DoubleTime(void)
 	return (tp.tv_sec - secbase) + tp.tv_usec / 1000000.0;
 }
 #endif
-
+/*
 int main(int argc, char **argv)
 {
 	double time, oldtime, newtime;
@@ -340,6 +343,7 @@ int main(int argc, char **argv)
 		Host_Frame(time);
 	}
 }
+*/
 
 void Sys_MakeCodeWriteable (unsigned long startaddr, unsigned long length) {
 	int r;
@@ -351,7 +355,7 @@ void Sys_MakeCodeWriteable (unsigned long startaddr, unsigned long length) {
 	if (r < 0)
     		Sys_Error("Protection change failed");
 }
-
+/*
 // kazik -->
 // directory listing functions
 int CopyDirent(sys_dirent *ent, struct dirent *tmpent)
@@ -553,7 +557,7 @@ int Sys_EnumerateFiles (char *gpath, char *match, int (*func)(char *, int, void 
 
 	return true;
 }
-
+*/
 /*************************** INTER PROCESS CALLS *****************************/
 #define PIPE_BUFFERSIZE		1024
 
@@ -601,7 +605,7 @@ void Sys_CloseIPC(void)
 		unlink(Sys_PipeFile());
 	}
 }
-
+/*
 void Sys_ReadIPC(void)
 {
 	char buf[PIPE_BUFFERSIZE] = {0};
@@ -633,7 +637,7 @@ unsigned int Sys_SendIPC(const char *buf)
 	return true;
 }
 
-
+*/
 /********************************** SEMAPHORES *******************************/
 /* Sys_Sem*() returns 0 on success; on error, -1 is returned */
 int Sys_SemInit(sem_t *sem, int value, int max_value) 
@@ -657,7 +661,8 @@ int Sys_SemDestroy(sem_t *sem)
 }
 
 /*********************************************************************************/
-int Sys_Script (const char *path, const char *args)
+/*
+ * int Sys_Script (const char *path, const char *args)
 {
 	char str[1024];
 
@@ -668,6 +673,7 @@ int Sys_Script (const char *path, const char *args)
 
 	return 1;
 }
+*/
 
 DL_t Sys_DLOpen(const char *path)
 {

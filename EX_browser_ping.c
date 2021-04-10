@@ -22,6 +22,7 @@ $Id: EX_browser_ping.c,v 1.40 2007-10-27 08:51:12 dkure Exp $
 #include "q_shared.h"
 #include "cvar.h"
 //#include "sys.h"
+#include <sys/sem.h>
 
 #ifdef _WIN32
 
@@ -651,7 +652,7 @@ void PingSendParrallelMultiHosts(pinghost_t *phosts, int nelms, int count) {
 /**
  * Thread entry point for parrallel recving of ping responses
  */
-
+/*
 int PingRecvProc(void *lpParameter)
 {
 	socklen_t inaddrlen;
@@ -698,7 +699,7 @@ int PingRecvProc(void *lpParameter)
 
 	return 0;
 }
-
+*/
 /**
  * Ping a single host count times, returns the average of the responses
  */
@@ -758,7 +759,7 @@ _select:
  * the responses.
  * FIXME: error handling is in rly bad shape
  */
-
+/*
 int PingHosts(server_data *servs[], int servsn, int count)
 {
 	u_int arg;
@@ -805,7 +806,7 @@ int PingHosts(server_data *servs[], int servsn, int count)
 
 	return 1;
 }
-
+*/
 
 //
 // ----------------------------------------------

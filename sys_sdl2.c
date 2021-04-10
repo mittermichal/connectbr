@@ -18,14 +18,40 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 #include "quakedef.h"
-#include <SDL/SDL.h>
-#include "q_shared.h"
-#include "cvar.h"
+#include <SDL.h>
 
 cvar_t sys_yieldcpu = {"sys_yieldcpu", "0"};
 cvar_t sys_inactivesound = {"sys_inactivesound", "0", CVAR_ARCHIVE};
 cvar_t sys_inactivesleep = {"sys_inactivesleep", "1"};
 cvar_t sys_disable_alt_enter = {"sys_disable_alt_enter", "0"};
+
+static void Sys_BatteryInfo_f(void)
+{
+	SDL_PowerState res;
+	int secs, percent;
+
+	if ((res = SDL_GetPowerInfo(&secs, &percent)) == SDL_POWERSTATE_UNKNOWN) {
+		Com_Printf("Failed to retrieve power state info\n");
+		return;
+	}
+
+	switch (res) {
+		case SDL_POWERSTATE_ON_BATTERY:
+			Com_Printf("%d%% left (%d:%02dh)\n", percent, secs/3600, (secs%3600)/60);
+			break;
+		case SDL_POWERSTATE_NO_BATTERY:
+			Com_Printf("No battery available\n");
+			break;
+		case SDL_POWERSTATE_CHARGING:
+			Com_Printf("Plugged in, charging battery (%d%%)\n", percent);
+			break;
+		case SDL_POWERSTATE_CHARGED:
+			Com_Printf("Plugged in, battery is fully charged\n");
+			break;
+		default:
+			break;
+	}
+}
 
 void Sys_CvarInit(void)
 {
@@ -36,6 +62,7 @@ void Sys_CvarInit(void)
 	Cvar_Register(&sys_disable_alt_enter);
 	Cvar_ResetCurrentGroup();
 
+	Cmd_AddCommand("batteryinfo", Sys_BatteryInfo_f);
 }
 
 wchar *Sys_GetClipboardTextW(void)
@@ -56,7 +83,6 @@ void Sys_CopyToClipboard(char *text)
 {
 	SDL_SetClipboardText(text);
 }
-
 
 int Sys_CreateDetachedThread(int (*func)(void *), void *data)
 {

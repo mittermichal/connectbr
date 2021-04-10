@@ -583,8 +583,8 @@ int GetServerPingsAndInfosProc(void * lpParameter)
         }*/
 
         sb_pings.integer=3;
-        PingHosts(servers, serversn, sb_pings.integer);
-        //oldPingHosts(servers, serversn, sb_pings.integer );
+        //PingHosts(servers, serversn, sb_pings.integer);
+        oldPingHosts(servers, serversn, sb_pings.integer );
 	}
 
     /*if (!abort_ping)
